@@ -21,8 +21,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <form class="d-flex w-100" role="search" id="formSearch" action="javascript:void(0);">
-                <input class="form-control me-2" type="search" placeholder="ค้นหาจากเลขบัตรประชาชน และชื่อ-นามสกุล" aria-label="Search" id="searchTxt">
-                <button class="btn btn-success" type="submit">ค้นหา</button>
+                <!-- <input class="form-control me-2" type="search" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล" aria-label="Search" id="searchTxt">
+                <button class="btn btn-success" type="submit">ค้นหา</button> -->
+
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
+                    <button type="button" class="btn bg-transparent" style="margin-left: -40px; z-index: 100;">
+                    <i class="fa fa-times"></i>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -60,7 +67,7 @@
                     </div>
                 </li>
                 <li class="list-group-item">
-                    <span><i class="far fa-check-circle me-2 text-success"></i></span>คุณภาสกร ศิริวรภัทร 
+                    <span class="me-2">คุณภาสกร ศิริวรภัทร</span><span><i class="fas fa-utensils me-2 text-success"></i><i class="fas fa-check text-success"></i></span>
                     <div class="float-end">
                     <span><i class="fas fa-sync fa-spin me-2"></i></span><a class="btn btn-success btn-sm print-sticker" data-id="555" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
                     </div>
