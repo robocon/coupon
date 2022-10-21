@@ -25,8 +25,8 @@
                 <button class="btn btn-success" type="submit">ค้นหา</button> -->
 
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
-                    <button type="button" class="btn bg-transparent" style="margin-left: -40px; z-index: 100;">
+                    <input type="text" class="form-control" name="search" id="search" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
+                    <button type="button" class="btn bg-transparent" id="btnClose" style="margin-left: -40px; z-index: 100;">
                     <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -38,7 +38,10 @@
 <div class="container mt-5">
     <div class="row">&nbsp;</div>
     <div class="row">
-        <div class="col-2"></div>
+        <div class="col-2">
+            <p><img src="images/qrcode-regis.png" alt="qr code for register" class="align-self-center w-100"></p>
+            <p class="text-center">ลงทะเบียนเพิ่มเติม</p>
+        </div>
         <div class="col-8">
             
             <ul class="list-group">
@@ -67,7 +70,7 @@
                     </div>
                 </li>
                 <li class="list-group-item">
-                    <span class="me-2">คุณภาสกร ศิริวรภัทร</span><span><i class="fas fa-utensils me-2 text-success"></i><i class="fas fa-check text-success"></i></span>
+                    <span class="me-2">คุณภาสกร ศิริวรภัทร</span><span><i class="fas fa-utensils me-2 text-success"></i><i class="fas fa-user-check text-success"></i></span>
                     <div class="float-end">
                     <span><i class="fas fa-sync fa-spin me-2"></i></span><a class="btn btn-success btn-sm print-sticker" data-id="555" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
                     </div>
@@ -90,8 +93,6 @@
 
     var myFunction = function() {
         var id = this.getAttribute("data-id");
-        // alert(attribute);
-
         var w = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
         // this.target = 'Popup_Window';
         w.print();
@@ -104,6 +105,21 @@
     }
 
 
+    document.getElementById("btnClose").onclick = function(){
+        document.getElementById("search").value = '';
+    }
+
+    document.getElementById("formSearch").onsubmit = function(){
+        
+        var s = document.getElementById("search");
+        // เอา value
+
+        alert(s.value);
+
+        // search เสร็จแล้วเคลียร์ค่าออกไป
+        s.value = '';
+
+    }
 
     // var myFormXray = document.getElementById('formIDXray');
     // myFormXray.onsubmit = function() {
