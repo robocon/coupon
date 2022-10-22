@@ -1,4 +1,12 @@
 <?php 
+require_once 'config.php';
+$dbi = new mysqli(HOST,USER,PASS,DB);
+
+$dbi->query(sprintf("UPDATE `users` SET `status_regis` = 'y' WHERE `id` = '%s'", $_GET['id']));
+
+$sql = sprintf("SELECT `id`,`fullname` FROM `users` WHERE `id` = '%s' ", $_GET['id']);
+$q = $dbi->query($sql);
+$user = $q->fetch_assoc();
 
 ?>
 <!DOCTYPE html>
@@ -19,11 +27,12 @@
 $id = $_REQUEST['id'];
 ?>
 <div class="card" style="width: 18rem;">
-  <img class="card-img-top align-self-center" src="images/2081949.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 220px;">
+  <img class="card-img-top align-self-center" src="images/2081949.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 180px;">
   <div class="card-body">
     <h5 class="card-title text-center">คูปองอาหาร</h5>
-    <p class="card-text">คูปองรับประทานอาหารกลางวัน</p>
-    <p class="card-text">คุณ ไอดี<?=$id;?></p>
+    <!-- <p class="card-text text-center">คูปองรับประทานอาหารกลางวัน</p> -->
+    <p class="card-text text-center">คุณ<?=$user['fullname'];?></p>
+    <h1 class="card-text text-center"><?=sprintf("%03d", $user['id']);?></h1>
   </div>
 </div>
 

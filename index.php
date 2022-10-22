@@ -1,3 +1,15 @@
+<?php 
+require_once 'config.php';
+$dbi = new mysqli(HOST,USER,PASS,DB);
+$q = $dbi->query("SELECT * FROM `users` WHERE `status_regis` IS NULL");
+$users1 = $q->fetch_all(MYSQLI_ASSOC);
+
+$q2 = $dbi->query("SELECT * FROM `users` WHERE `status_regis` IS NOT NULL");
+$users2 = $q2->fetch_all(MYSQLI_ASSOC);
+
+$users = array_merge($users1, $users2);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,25 +25,16 @@
 </head>
 <body>
     
-<nav class="navbar fixed-top navbar-expand-lg bg-light">
+<nav class="navbar fixed-top bg-light">
     <div class="container-fluid">
-        <!-- <a class="navbar-brand" href="#">Navbar</a> -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <form class="d-flex w-100" role="search" id="formSearch" action="javascript:void(0);">
-                <!-- <input class="form-control me-2" type="search" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล" aria-label="Search" id="searchTxt">
-                <button class="btn btn-success" type="submit">ค้นหา</button> -->
-
-                <div class="input-group">
-                    <input type="text" class="form-control" name="search" id="search" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
-                    <button type="button" class="btn bg-transparent" id="btnClose" style="margin-left: -40px; z-index: 100;">
-                    <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
+        <form class="d-flex w-100" role="search" id="formSearch" action="javascript:void(0);">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
+                <button type="button" class="btn bg-transparent" id="btnClose" style="margin-left: -40px; z-index: 100;">
+                <i class="fa fa-times"></i>
+                </button>
+            </div>
+        </form>
     </div>
 </nav>
 
@@ -39,46 +42,48 @@
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-2">
-            <p><img src="images/qrcode-regis.png" alt="qr code for register" class="align-self-center w-100"></p>
-            <p class="text-center">ลงทะเบียนเพิ่มเติม</p>
+            <div class="sticky-top pt-5">
+                <p><img src="images/qrcode-regis.png" alt="qr code for register" class="align-self-center w-100"></p>
+                <p class="text-center"><a href="<?='http://'.$_SERVER['HTTP_HOST'].(!empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' ).'register.php';?>" target="_blank">ลงทะเบียนเพิ่มเติม</a></p>
+            </div>
         </div>
         <div class="col-8">
             
             <ul class="list-group">
-                <li class="list-group-item">
-                    <span></span>คุณชนินี รุ่งรัศมีทรัพย์ 
-                    <div class="float-end">
-                        <a class="btn btn-success btn-sm print-sticker" data-id="111" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <span></span>คุณกนกพงศ์ เผ่ารอด 
-                    <div class="float-end">
-                        <a class="btn btn-success btn-sm print-sticker" data-id="222" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <span></span>คุณพีรยา ธนากานต์ 
-                    <div class="float-end">
-                        <a class="btn btn-success btn-sm print-sticker" data-id="333" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <span></span>คุณมาริสา วรภัทรศิริสกุล 
-                    <div class="float-end">
-                        <a class="btn btn-success btn-sm print-sticker" data-id="444" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <span class="me-2">คุณภาสกร ศิริวรภัทร</span><span><i class="fas fa-utensils me-2 text-success"></i><i class="fas fa-user-check text-success"></i></span>
-                    <div class="float-end">
-                    <span><i class="fas fa-sync fa-spin me-2"></i></span><a class="btn btn-success btn-sm print-sticker" data-id="555" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
-                    </div>
-                </li>
+                <?php 
+                foreach($users AS $user){
+                    $regis = '';
+                    if($user['status_regis']){
+                        $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
+                    }
+
+                    $coupon = '';
+                    if($user['status_coupon']){
+                        $coupon = '<i class="fas fa-utensils me-2 text-success"></i>';
+                    }
+                    ?>
+                    <li class="list-group-item">
+                        
+                        <span class="me-2"><?=$user['fullname'];?></span>
+                        <span><?=$regis.$coupon;?></span>
+
+                        <div class="float-end">
+                            <span><i class="fas fa-sync fa-spin me-2"></i></span>
+                            <a class="btn btn-success btn-sm print-sticker" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
+                        </div>
+                    </li>
+                    <?php
+                }
+                ?>
             </ul>
 
         </div>
-        <div class="col-2"></div>
+        <div class="col-2">
+            <div class="sticky-top pt-5">
+                <!-- <p><img src="images/qrcode-regis.png" alt="qr code for register" class="align-self-center w-100"></p>
+                <p class="text-center">...</p> -->
+            </div>
+        </div>
     </div>
 </div>
 
@@ -95,8 +100,8 @@
         var id = this.getAttribute("data-id");
         var w = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
         // this.target = 'Popup_Window';
-        w.print();
-        w.close();
+        // w.print();
+        // w.close();
 
     };
 
