@@ -69,7 +69,7 @@ $users = array_merge($users1, $users2);
                         <span><?=$regis.$coupon;?></span>
 
                         <div class="float-end">
-                            <span><i class="fas fa-sync fa-spin me-2"></i></span>
+                            <!-- <span><i class="fas fa-sync fa-spin me-2"></i></span> -->
                             <a class="btn btn-success btn-sm print-sticker" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
                         </div>
                     </li>
@@ -97,14 +97,26 @@ $users = array_merge($users1, $users2);
 
     var elements = document.getElementsByClassName('print-sticker');
 
-    var myFunction = function() {
-        var id = this.getAttribute("data-id");
-        var w = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
-        // this.target = 'Popup_Window';
-        // w.print();
-        w.close();
-        window.location = 'index.php';
+    // var Popup_Window;
+    var myFunction = function() { 
 
+        var id = this.getAttribute("data-id");
+
+        // window.location.reload();
+
+        var Popup_Window = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
+        // this.target = 'Popup_Window';
+        Popup_Window.addEventListener('load', function(){
+            Popup_Window.print();
+            Popup_Window.top.location = 'index.php';
+            Popup_Window.close();
+            
+        }, false);
+        
+
+        // window.location.reload();
+        // window.location = 'index.php';
+        
     };
 
     for (var i = 0; i < elements.length; i++) {

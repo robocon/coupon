@@ -26,7 +26,7 @@ $user = $q->fetch_assoc();
 <?php 
 $id = $_REQUEST['id'];
 ?>
-<div class="card" style="width: 300px;">
+<div class="card d-flex justify-content-center" style="width: 100%;">
   <img class="card-img-top align-self-center" src="images/2081949.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 180px;">
   <div class="card-body">
     <h5 class="card-title text-center">คูปองอาหารกลางวัน</h5>
