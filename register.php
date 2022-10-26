@@ -3,6 +3,7 @@ require_once 'config.php';
 $action = $_POST['action'];
 if($action=='regis'){ 
     $dbi = new mysqli(HOST,USER,PASS,DB);
+    $dbi->query("SET NAMES UTF8");
     $sql = sprintf("INSERT INTO `users` (`idcard`, `fullname`, `status_regis`) VALUES ('%s', '%s', 'y');", $_POST['idcard'], $_POST['fullname']);
     $q = $dbi->query($sql);
     if($q===false){

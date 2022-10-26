@@ -1,6 +1,7 @@
 <?php 
 require_once 'config.php';
 $dbi = new mysqli(HOST,USER,PASS,DB);
+$dbi->query("SET NAMES UTF8");
 $q = $dbi->query("SELECT * FROM `users` WHERE `status_regis` IS NULL");
 $users1 = $q->fetch_all(MYSQLI_ASSOC);
 
