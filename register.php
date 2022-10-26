@@ -1,6 +1,12 @@
 <?php 
 require_once 'config.php';
 $action = $_POST['action'];
+
+if($_COOKIE['SHS_COUPON']){
+    dump($_COOKIE['SHS_COUPON']); 
+    exit;
+}
+
 if($action=='regis'){ 
     $dbi = new mysqli(HOST,USER,PASS,DB);
     $dbi->query("SET NAMES UTF8");
@@ -12,10 +18,7 @@ if($action=='regis'){
     }
     $id = $dbi->insert_id;
 
-
-    /**
-     * !!! เก็บค่าเป็นคุกกี้เอาไว้ ตอน scan มาอีกรอบให้เด้งไปที่หน้าของ print_coupon เลย
-     */
+    setcookie('SHS_COUPON', $id, time() + (86400 * 30), "/");
 
     $_SESSION['resMsg'] = 'บันทึกข้อมูลเรียบร้อย';
     header("Location: print_coupon.php?id=$id");

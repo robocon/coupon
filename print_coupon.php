@@ -1,5 +1,7 @@
 <?php 
 require_once 'config.php';
+require_once 'libs/phpqrcode/qrlib.php';
+
 $dbi = new mysqli(HOST,USER,PASS,DB);
 $dbi->query("SET NAMES UTF8");
 $dbi->query(sprintf("UPDATE `users` SET `status_regis` = 'y' WHERE `id` = '%s'", $_GET['id']));
@@ -7,6 +9,8 @@ $dbi->query(sprintf("UPDATE `users` SET `status_regis` = 'y' WHERE `id` = '%s'",
 $sql = sprintf("SELECT `id`,`fullname` FROM `users` WHERE `id` = '%s' ", $_GET['id']);
 $q = $dbi->query($sql);
 $user = $q->fetch_assoc();
+
+$show_id = sprintf("%03d", $user['id']);
 
 ?>
 <!DOCTYPE html>
@@ -23,19 +27,14 @@ $user = $q->fetch_assoc();
     <script src="https://kit.fontawesome.com/6b4c2963a2.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<?php 
-$id = $_REQUEST['id'];
-?>
-<div class="card d-flex justify-content-center" style="width: 100%;">
+<div class="card d-flex justify-content-center w-100 border-0">
   <img class="card-img-top align-self-center" src="images/2081949.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 180px;">
   <div class="card-body">
     <h5 class="card-title text-center">คูปองอาหารกลางวัน</h5>
-    <!-- <p class="card-text text-center">คูปองรับประทานอาหารกลางวัน</p> -->
     <p class="card-text text-center">คุณ<?=$user['fullname'];?></p>
-    <h1 class="card-text text-center"><?=sprintf("%03d", $user['id']);?></h1>
+    <h1 class="card-text text-center"><?=$show_id;?></h1>
+    <div class="card-text text-center"><img src="printQrCode.php?hn=<?=$show_id;?>&margin=1"></div>
   </div>
 </div>
-
-
 </body>
 </html>

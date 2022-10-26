@@ -30,7 +30,7 @@ $users = array_merge($users1, $users2);
     <div class="container-fluid">
         <form class="d-flex w-100" role="search" id="formSearch" action="javascript:void(0);">
             <div class="input-group">
-                <input type="text" class="form-control" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
+                <input type="text" class="form-control form-control-lg" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
                 <button type="button" class="btn bg-transparent" id="btnClose" style="margin-left: -40px; z-index: 100;">
                 <i class="fa fa-times"></i>
                 </button>
@@ -38,18 +38,16 @@ $users = array_merge($users1, $users2);
         </form>
     </div>
 </nav>
-
 <div class="container mt-5">
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-2">
-            <div class="sticky-top pt-5">
-                <p><img src="images/qrcode-regis.png" alt="qr code for register" class="align-self-center w-100"></p>
-                <p class="text-center"><a href="<?='http://'.$_SERVER['HTTP_HOST'].(!empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '' ).'register.php';?>" target="_blank">ลงทะเบียนเพิ่มเติม</a></p>
+            <div class="position-sticky top-50 start-0 translate-middle">
+                <p><img src="images/qrcode-regis.png" alt="qr code for register" class="w-100"></p>
+                <p class="text-center"><a href="register.php" target="_blank">ลงทะเบียนเพิ่มเติม</a></p>
             </div>
         </div>
         <div class="col-8">
-            
             <ul class="list-group">
                 <?php 
                 foreach($users AS $user){
@@ -65,19 +63,18 @@ $users = array_merge($users1, $users2);
                     ?>
                     <li class="list-group-item">
                         
-                        <span class="me-2"><?=$user['fullname'];?></span>
+                        <span class="me-2 fs-2"><?=$user['fullname'];?></span>
                         <span><?=$regis.$coupon;?></span>
 
                         <div class="float-end">
                             <!-- <span><i class="fas fa-sync fa-spin me-2"></i></span> -->
-                            <a class="btn btn-success btn-sm print-sticker" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
+                            <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
                         </div>
                     </li>
                     <?php
                 }
                 ?>
             </ul>
-
         </div>
         <div class="col-2">
             <div class="sticky-top pt-5">
@@ -104,17 +101,17 @@ $users = array_merge($users1, $users2);
 
         // window.location.reload();
 
-        var Popup_Window = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
+        var Popup_Window = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=500,left = 312,top = 234');
         // this.target = 'Popup_Window';
         Popup_Window.addEventListener('load', function(){
             Popup_Window.print();
-            Popup_Window.top.location = 'index.php';
+            // Popup_Window.top.location = 'index.php';
             Popup_Window.close();
             
         }, false);
         
 
-        // window.location.reload();
+        window.location.reload();
         // window.location = 'index.php';
         
     };
