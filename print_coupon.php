@@ -26,10 +26,10 @@ $user = $q->fetch_assoc();
 <?php 
 $id = $_REQUEST['id'];
 ?>
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 300px;">
   <img class="card-img-top align-self-center" src="images/2081949.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 180px;">
   <div class="card-body">
-    <h5 class="card-title text-center">คูปองอาหาร</h5>
+    <h5 class="card-title text-center">คูปองอาหารกลางวัน</h5>
     <!-- <p class="card-text text-center">คูปองรับประทานอาหารกลางวัน</p> -->
     <p class="card-text text-center">คุณ<?=$user['fullname'];?></p>
     <h1 class="card-text text-center"><?=sprintf("%03d", $user['id']);?></h1>
