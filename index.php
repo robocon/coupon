@@ -106,8 +106,10 @@ $users = array_merge($users1, $users2);
             
         }, false);
         
-
-        window.location.reload();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+        
         
     };
 
