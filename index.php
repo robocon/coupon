@@ -98,21 +98,16 @@ $users = array_merge($users1, $users2);
     var myFunction = function() { 
 
         var id = this.getAttribute("data-id");
-
-        // window.location.reload();
-
         var Popup_Window = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=500,left = 312,top = 234');
         // this.target = 'Popup_Window';
         Popup_Window.addEventListener('load', function(){
             Popup_Window.print();
-            // Popup_Window.top.location = 'index.php';
             Popup_Window.close();
             
         }, false);
         
 
         window.location.reload();
-        // window.location = 'index.php';
         
     };
 

@@ -3,7 +3,9 @@ require_once 'config.php';
 $action = $_POST['action'];
 
 if($_COOKIE['SHS_COUPON']){
-    dump($_COOKIE['SHS_COUPON']); 
+    $id = $_COOKIE['SHS_COUPON'];
+    unset($_SESSION['resMsg']);
+    header("Location: print_coupon.php?id=$id");
     exit;
 }
 
@@ -45,7 +47,7 @@ if($action=='regis'){
     } */
     </style>
     <div class="container">
-        <h3>ฟอร์มลงทะเบียน</h3>
+        <h1 class="text-center">ฟอร์มลงทะเบียน</h1>
         <?php 
         if(!empty($_SESSION['resMsg'])){
             ?>
@@ -56,20 +58,20 @@ if($action=='regis'){
         ?>
         <form action="register.php" method="post" class="needs-validation" novalidate>
             <div class="form-group">
-                <label for="idcard">เลขบัตรประชาชน</label>
-                <input type="number" class="form-control" name="idcard" id="idcard" placeholder="กรอกเลขบัตรประชาชน" required>
-                <div class="invalid-feedback">
+                <label for="idcard" class="fs-4">เลขบัตรประชาชน</label>
+                <input type="number" class="form-control form-control-lg" name="idcard" id="idcard" placeholder="กรอกเลขบัตรประชาชน" required>
+                <div class="invalid-feedback fs-5">
                     กรุณาใส่เลขบัตรประชาชน
                 </div>
             </div>
             <div class="form-group">
-                <label for="fullname">ชื่อ-สกุล</label>
-                <input type="text" class="form-control" name="fullname" id="fullname" placeholder="กรอกชื่อ-นามสกุล ไม่ต้องมีคำนำหน้าชื่อ" required>
-                <div class="invalid-feedback">
+                <label for="fullname" class="fs-4">ชื่อ-สกุล</label>
+                <input type="text" class="form-control form-control-lg" name="fullname" id="fullname" placeholder="กรอกชื่อ-นามสกุล ไม่ต้องมีคำนำหน้าชื่อ" required>
+                <div class="invalid-feedback fs-5">
                     กรุณาใส่ชื่อ-นามสกุล
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary mt-2">ลงทะเบียน</button>
+            <button type="submit" class="btn btn-primary mt-2 form-control-lg">ลงทะเบียน</button>
             <input type="hidden" name="action" value="regis">
         </form>
     </div>
