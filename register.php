@@ -10,8 +10,9 @@ if($action=='regis'){
         dump($dbi->error);
         exit;
     }
+    $id = $dbi->insert_id;
     $_SESSION['resMsg'] = 'บันทึกข้อมูลเรียบร้อย';
-    header("Location: register.php");
+    header("Location: print_coupon.php?id=$id");
     exit;
 }
 ?>

@@ -102,7 +102,8 @@ $users = array_merge($users1, $users2);
         var w = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
         // this.target = 'Popup_Window';
         // w.print();
-        // w.close();
+        w.close();
+        window.location = 'index.php';
 
     };
 
