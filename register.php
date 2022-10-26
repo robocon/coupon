@@ -11,6 +11,12 @@ if($action=='regis'){
         exit;
     }
     $id = $dbi->insert_id;
+
+
+    /**
+     * !!! เก็บค่าเป็นคุกกี้เอาไว้ ตอน scan มาอีกรอบให้เด้งไปที่หน้าของ print_coupon เลย
+     */
+
     $_SESSION['resMsg'] = 'บันทึกข้อมูลเรียบร้อย';
     header("Location: print_coupon.php?id=$id");
     exit;

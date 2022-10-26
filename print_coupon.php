@@ -1,7 +1,7 @@
 <?php 
 require_once 'config.php';
 $dbi = new mysqli(HOST,USER,PASS,DB);
-
+$dbi->query("SET NAMES UTF8");
 $dbi->query(sprintf("UPDATE `users` SET `status_regis` = 'y' WHERE `id` = '%s'", $_GET['id']));
 
 $sql = sprintf("SELECT `id`,`fullname` FROM `users` WHERE `id` = '%s' ", $_GET['id']);
