@@ -48,7 +48,7 @@ $users = array_merge($users1, $users2);
             </div>
         </div>
         <div class="col-8">
-            <ul class="list-group">
+            <ul class="list-group" id="show-all-user">
                 <?php 
                 foreach($users AS $user){
                     $regis = '';
@@ -104,15 +104,23 @@ $users = array_merge($users1, $users2);
 
 
 
+    async function loadPage(){ 
+        let response = await fetch('http://localhost/coupon/show_all_user.php');
+        document.querySelector('#show-all-user').innerHTML = await response.text();
+        
+    }
 
-    // enter เลขบัตรประชาชน+ชื่อสกุล
-    document.getElementById('formSearch').addEventListener('submit',()=>{ 
-        document.getElementById('searchTxt').value="";
-    });
+    loadPage().then(testAlert);
+    
+    function testAlert(){
+        var elements = document.getElementsByClassName('print-sticker');
 
-    var elements = document.getElementsByClassName('print-sticker');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', myFunction, false);
+        }
 
-    // var Popup_Window;
+    }
+    
     var myFunction = function() { 
 
         var id = this.getAttribute("data-id");
@@ -131,9 +139,16 @@ $users = array_merge($users1, $users2);
         
     };
 
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].addEventListener('click', myFunction, false);
-    }
+    
+
+
+
+    // ฟอร์มค้นหา
+
+    // enter เลขบัตรประชาชน+ชื่อสกุล
+    document.getElementById('formSearch').addEventListener('submit',()=>{ 
+        document.getElementById('searchTxt').value="";
+    });
 
 
     document.getElementById("btnClose").onclick = function(){
@@ -156,12 +171,6 @@ $users = array_merge($users1, $users2);
          */
 
     }
-
-    // var myFormXray = document.getElementById('formIDXray');
-    // myFormXray.onsubmit = function() {
-    //     var w = window.open('about:blank','Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=300,left = 312,top = 234');
-    //     this.target = 'Popup_Window';
-    // };
     
 
 </script>
