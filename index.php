@@ -87,6 +87,24 @@ $users = array_merge($users1, $users2);
 
 <script>
 
+    /**
+     * ไอเดียเรื่องการแสดงผลและการ reload page 
+     * - เปิดหน้าจอมาครั้งแรกให้ทำงานผ่าน onload แล้วไปเรียกฟังก์ชั่นที่โหลดรายชื่อมาแสดง
+     * - หลังจากกดปุ่มขอคูปอง ให้เรียกฟังก์ชั่นที่โหลดรายชื่อมาทับใน div ตัวปัจจุบัน
+     * 
+     * หน้าที่แสดงรายชื่อปัจจุบัน
+     * เป็นคำสั่งตัวเดิมที่แยกรายการออกเป็นสองส่วน คือด้านบนเป็นคนที่ยังไม่ได้กดคูปอง ส่วนด้านล่างเป็นชื่อคนที่กดคูปองไปเรียบร้อยแล้ว
+     * 
+     * 
+     * เรื่องการให้ js อ่าน qr code
+     * https://minhazav.medium.com/qr-code-scanner-using-html-and-javascript-3895a0c110cd
+     * 
+     * 
+     */
+
+
+
+
     // enter เลขบัตรประชาชน+ชื่อสกุล
     document.getElementById('formSearch').addEventListener('submit',()=>{ 
         document.getElementById('searchTxt').value="";
@@ -130,7 +148,12 @@ $users = array_merge($users1, $users2);
         alert(s.value);
 
         // search เสร็จแล้วเคลียร์ค่าออกไป
-        s.value = '';
+        // s.value = '';
+
+        /**
+         * ไอเดียในช่อง search คือ มี div ที่ซ่อนไว้ 1 ตัวในนั้นจะแสดงชื่อคนที่ค้นหา
+         * แล้วพอกดปุ่มกากะบาทจะ hide div ตัวนั้น
+         */
 
     }
 
