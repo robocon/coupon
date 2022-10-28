@@ -105,7 +105,7 @@ $users = array_merge($users1, $users2);
 
 
     async function loadPage(){ 
-        let response = await fetch('http://localhost/coupon/show_all_user.php');
+        let response = await fetch('show_all_user.php');
         document.querySelector('#show-all-user').innerHTML = await response.text();
         
     }

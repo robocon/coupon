@@ -58,10 +58,10 @@ if($action=='regis'){
         ?>
         <form action="register.php" method="post" class="needs-validation" novalidate>
             <div class="form-group">
-                <label for="idcard" class="fs-4">เลขบัตรประชาชน</label>
-                <input type="number" class="form-control form-control-lg" name="idcard" id="idcard" placeholder="กรอกเลขบัตรประชาชน" required>
+                <label for="idcard" class="fs-4">เบอร์โทร</label>
+                <input type="number" class="form-control form-control-lg" name="idcard" id="idcard" placeholder="ใส่เบอร์โทรไม่ต้องมีขีด" required>
                 <div class="invalid-feedback fs-5">
-                    กรุณาใส่เลขบัตรประชาชน
+                    กรุณาใส่เบอร์โทร
                 </div>
             </div>
             <div class="form-group">
