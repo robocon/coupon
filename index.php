@@ -129,12 +129,14 @@ $users = array_merge($users1, $users2);
         Popup_Window.addEventListener('load', function(){
             Popup_Window.print();
             Popup_Window.close();
+
+            loadPage().then(testAlert);
             
         }, false);
         
-        setTimeout(() => {
-            window.location.reload();
-        }, 2000);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 2000);
         
         
     };
