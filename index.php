@@ -48,33 +48,41 @@ $users = array_merge($users1, $users2);
             </div>
         </div>
         <div class="col-8">
-            <ul class="list-group" id="show-all-user">
-                <?php 
-                foreach($users AS $user){
-                    $regis = '';
-                    if($user['status_regis']){
-                        $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
-                    }
+            <div id="main-content">
+                <ul class="list-group" id="show-all-user">
+                    <?php 
+                    /*
+                    foreach($users AS $user){
+                        $regis = '';
+                        if($user['status_regis']){
+                            $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
+                        }
 
-                    $coupon = '';
-                    if($user['status_coupon']){
-                        $coupon = '<i class="fas fa-utensils me-2 text-success"></i>';
+                        $coupon = '';
+                        if($user['status_coupon']){
+                            $coupon = '<i class="fas fa-utensils me-2 text-success"></i>';
+                        }
+                        ?>
+                        <li class="list-group-item">
+                            
+                            <span class="me-2 fs-2"><?=$user['fullname'];?></span>
+                            <span><?=$regis.$coupon;?></span>
+
+                            <div class="float-end">
+                                <!-- <span><i class="fas fa-sync fa-spin me-2"></i></span> -->
+                                <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
+                            </div>
+                        </li>
+                        <?php
                     }
+                    */
                     ?>
-                    <li class="list-group-item">
-                        
-                        <span class="me-2 fs-2"><?=$user['fullname'];?></span>
-                        <span><?=$regis.$coupon;?></span>
-
-                        <div class="float-end">
-                            <!-- <span><i class="fas fa-sync fa-spin me-2"></i></span> -->
-                            <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
-                        </div>
-                    </li>
-                    <?php
-                }
-                ?>
-            </ul>
+                </ul>
+            </div>
+            <div id="sub-content">
+                <ul class="list-group" id="show-sub-content">
+                <ul>
+            </div>
         </div>
         <div class="col-2">
             <div class="sticky-top pt-5">
@@ -102,23 +110,28 @@ $users = array_merge($users1, $users2);
      * 
      */
 
-
+    loadPage();
 
     async function loadPage(){ 
         let response = await fetch('show_all_user.php');
         document.querySelector('#show-all-user').innerHTML = await response.text();
-        
+
+        var elements = document.getElementsByClassName('print-sticker');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].addEventListener('click', myFunction, false);
+        }
+
+        document.getElementById("sub-content").style.display = 'none';
+        document.getElementById("main-content").style.display = '';
+        document.getElementById("search").value = '';
     }
 
-    loadPage().then(testAlert);
-    
-    function testAlert(){
+    async function testAlert(){
         var elements = document.getElementsByClassName('print-sticker');
 
         for (var i = 0; i < elements.length; i++) {
             elements[i].addEventListener('click', myFunction, false);
         }
-
     }
     
     var myFunction = function() { 
@@ -130,15 +143,10 @@ $users = array_merge($users1, $users2);
             Popup_Window.print();
             Popup_Window.close();
 
-            loadPage().then(testAlert);
-            
+            // loadPage().then(testAlert);
+            loadPage();
+
         }, false);
-        
-        // setTimeout(() => {
-        //     window.location.reload();
-        // }, 2000);
-        
-        
     };
 
     
@@ -146,68 +154,31 @@ $users = array_merge($users1, $users2);
 
 
     // ฟอร์มค้นหา
-
-    // enter เลขบัตรประชาชน+ชื่อสกุล
-    // document.getElementById('formSearch').addEventListener('submit',()=>{ 
-        // document.getElementById('searchTxt').value="";
-    // });
-
-
     document.getElementById("btnClose").onclick = function(){
         document.getElementById("search").value = '';
-    }
-
-
-    document.getElementById('search').addEventListener('keyup',(e)=>{ 
-        // var s = document.getElementById("search");
-        var s = e.target;
-        // console.log(e.target.value);
-        if(s.value >= 3){ 
-            // console.log(s.value);
-            search_data(s.value);
-        }
-    });
-
-
-    document.getElementById("formSearch").onsubmit = function(){
         
-        var s = document.getElementById("search");
-        // เอา value
-
-        alert(s.value);
-
-        // await search_data(s.value);
-
-        
-
-        // search เสร็จแล้วเคลียร์ค่าออกไป
-        // s.value = '';
-
-        /**
-         * ไอเดียในช่อง search คือ มี div ที่ซ่อนไว้ 1 ตัวในนั้นจะแสดงชื่อคนที่ค้นหา
-         * แล้วพอกดปุ่มกากะบาทจะ hide div ตัวนั้น
-         */
-        // document.getElementById('serach').value="";
-
+        document.getElementById("sub-content").style.display = 'none';
+        document.getElementById("main-content").style.display = '';
     }
     
-    async function search_data(searchTxt){
-        // let myPromise = new Promise(function(myResolve, myReject) {
-        // "Producing Code" (May take some time)
+    async function find_user(val){
+        if(val.length >= 3){ 
+            document.getElementById("main-content").style.display = 'none';
 
+            var response = await fetch('find_user.php?search='+val);
 
-            await fetch('find_user.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(["search" : searchTxt])
-            });
+            if (!response.ok) {
+            }
 
-            // myResolve(); // when successful
-            // myReject();  // when error
-        // });
+            var body = await response.text();
+            document.getElementById("show-sub-content").innerHTML = body;
+            document.getElementById("sub-content").style.display = '';
+        }
     }
+
+    document.getElementById("search").addEventListener("keyup", (e)=>{
+        find_user(e.target.value).then(testAlert);
+    });
 
 </script>
 </body>

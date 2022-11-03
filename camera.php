@@ -56,12 +56,12 @@
 
         async function updateCoupon(confirm_id){ 
             var response = await fetch('confirm_coupon.php?id='+confirm_id);
-            if (!response.ok) {
+            if (!response.ok) { 
+                
             }
             var resText = await response.text();
             document.getElementById('qr-confirm').innerHTML = "Confirm Coupon: "+resText;
-            // let response = await fetch('show_all_user.php');
-            // document.querySelector('#show-all-user').innerHTML = await response.text();
+            
             
         }
     </script>

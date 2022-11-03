@@ -28,12 +28,12 @@ $show_id = sprintf("%03d", $user['id']);
 </head>
 <body>
 <div class="card d-flex justify-content-center w-100 border-0">
-  <!-- <img class="card-img-top align-self-center" src="images/2081949.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 180px;"> -->
+  <!-- <img class="card-img-top align-self-center" src="images/fork.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 150px;"> -->
   <div class="card-body">
     <h5 class="card-title text-center">คูปองอาหารกลางวัน</h5>
     <p class="card-text text-center">คุณ<?=$user['fullname'];?></p>
     <!-- <h1 class="card-text text-center"><?=$show_id;?></h1> -->
-    <div class="card-text text-center"><img src="printQrCode.php?hn=<?=$show_id;?>&margin=1"></div>
+    <div class="card-text text-center"><img src="printQrCode.php?id=<?=$show_id;?>&margin=1"></div>
   </div>
 </div>
 </body>
