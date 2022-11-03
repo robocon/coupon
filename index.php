@@ -30,7 +30,7 @@ $users = array_merge($users1, $users2);
     <div class="container-fluid">
         <form class="d-flex w-100" role="search" id="formSearch" action="javascript:void(0);">
             <div class="input-group">
-                <input type="text" class="form-control form-control-lg" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเลขบัตรประชาชน หรือ ชื่อ-นามสกุล">
+                <input type="text" class="form-control form-control-lg" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเบอร์โทร หรือ ชื่อ-นามสกุล">
                 <button type="button" class="btn bg-transparent" id="btnClose" style="margin-left: -40px; z-index: 100;">
                 <i class="fa fa-times"></i>
                 </button>
@@ -148,14 +148,26 @@ $users = array_merge($users1, $users2);
     // ฟอร์มค้นหา
 
     // enter เลขบัตรประชาชน+ชื่อสกุล
-    document.getElementById('formSearch').addEventListener('submit',()=>{ 
-        document.getElementById('searchTxt').value="";
-    });
+    // document.getElementById('formSearch').addEventListener('submit',()=>{ 
+        // document.getElementById('searchTxt').value="";
+    // });
 
 
     document.getElementById("btnClose").onclick = function(){
         document.getElementById("search").value = '';
     }
+
+
+    document.getElementById('search').addEventListener('keyup',(e)=>{ 
+        // var s = document.getElementById("search");
+        var s = e.target;
+        // console.log(e.target.value);
+        if(s.value >= 3){ 
+            // console.log(s.value);
+            search_data(s.value);
+        }
+    });
+
 
     document.getElementById("formSearch").onsubmit = function(){
         
@@ -164,6 +176,10 @@ $users = array_merge($users1, $users2);
 
         alert(s.value);
 
+        // await search_data(s.value);
+
+        
+
         // search เสร็จแล้วเคลียร์ค่าออกไป
         // s.value = '';
 
@@ -171,9 +187,27 @@ $users = array_merge($users1, $users2);
          * ไอเดียในช่อง search คือ มี div ที่ซ่อนไว้ 1 ตัวในนั้นจะแสดงชื่อคนที่ค้นหา
          * แล้วพอกดปุ่มกากะบาทจะ hide div ตัวนั้น
          */
+        // document.getElementById('serach').value="";
 
     }
     
+    async function search_data(searchTxt){
+        // let myPromise = new Promise(function(myResolve, myReject) {
+        // "Producing Code" (May take some time)
+
+
+            await fetch('find_user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(["search" : searchTxt])
+            });
+
+            // myResolve(); // when successful
+            // myReject();  // when error
+        // });
+    }
 
 </script>
 </body>
