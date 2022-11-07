@@ -41,7 +41,7 @@ $users = array_merge($users1, $users2);
 <div class="container mt-5">
     <div class="row">&nbsp;</div>
     <div class="row">
-        <div class="col-2">
+        <div class="col-2" style="min-height: 800px;">
             <div class="position-sticky top-50 start-0 translate-middle">
                 <p><img src="images/qrcode-regis.png" alt="qr code for register" class="w-100"></p>
                 <p class="text-center"><a href="register.php" target="_blank">ลงทะเบียนเพิ่มเติม</a></p>
