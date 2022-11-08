@@ -43,8 +43,8 @@ $users = array_merge($users1, $users2);
     <div class="row">
         <div class="col-2" style="min-height: 800px;">
             <div class="position-sticky top-50 start-0 translate-middle">
-                <p><img src="images/qrcode-regis.png" alt="qr code for register" class="w-100"></p>
-                <p class="text-center"><a href="register.php" target="_blank">ลงทะเบียนเพิ่มเติม</a></p>
+                <p><img src="printQrcode.php?id=https://0edb-159-192-141-216.ngrok.io/coupon/register.php" alt="qr code for register" class="w-100"></p>
+                <p class="text-center">ลงทะเบียนเพิ่มเติม</p>
             </div>
         </div>
         <div class="col-8">
@@ -141,7 +141,7 @@ $users = array_merge($users1, $users2);
         // this.target = 'Popup_Window';
         Popup_Window.addEventListener('load', function(){
             Popup_Window.print();
-            Popup_Window.close();
+            // Popup_Window.close();
 
             // loadPage().then(testAlert);
             loadPage();
@@ -179,6 +179,13 @@ $users = array_merge($users1, $users2);
     document.getElementById("search").addEventListener("keyup", (e)=>{
         find_user(e.target.value).then(testAlert);
     });
+
+
+    var sec = 1000;
+    var min = 60 * sec;
+    setInterval(() => {
+        loadPage();
+    }, (min * 3));
 
 </script>
 </body>

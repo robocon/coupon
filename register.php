@@ -2,6 +2,13 @@
 require_once 'config.php';
 $action = $_POST['action'];
 
+
+if($_COOKIE['SHS_PHONE']){
+    $check_phone = $_COOKIE['SHS_PHONE'];
+    // $sql = sprintf("SELECT `id`,`idcard`,`fullname`, `status_regis` WHERE `idcard` = '%s';", $check_phone);
+
+}
+
 if($_COOKIE['SHS_COUPON']){
     $id = $_COOKIE['SHS_COUPON'];
     unset($_SESSION['resMsg']);
@@ -12,7 +19,10 @@ if($_COOKIE['SHS_COUPON']){
 if($action=='regis'){ 
     $dbi = new mysqli(HOST,USER,PASS,DB);
     $dbi->query("SET NAMES UTF8");
-    $sql = sprintf("INSERT INTO `users` (`idcard`, `fullname`, `status_regis`) VALUES ('%s', '%s', 'y');", $_POST['idcard'], $_POST['fullname']);
+
+    $phone = sprintf("%s", $_POST['idcard']);
+
+    $sql = sprintf("INSERT INTO `users` (`idcard`, `fullname`, `status_regis`) VALUES ('$phone', '%s', 'y');", $_POST['fullname']);
     $q = $dbi->query($sql);
     if($q===false){
         dump($dbi->error);
@@ -21,6 +31,7 @@ if($action=='regis'){
     $id = $dbi->insert_id;
 
     setcookie('SHS_COUPON', $id, time() + (86400 * 30), "/");
+    setcookie('SHS_PHONE', $phone, time() + (86400 * 30), "/");
 
     $_SESSION['resMsg'] = 'บันทึกข้อมูลเรียบร้อย';
     header("Location: print_coupon.php?id=$id");
@@ -66,12 +77,19 @@ if($action=='regis'){
             </div>
             <div class="form-group">
                 <label for="fullname" class="fs-4">ชื่อ-สกุล</label>
-                <input type="text" class="form-control form-control-lg" name="fullname" id="fullname" placeholder="กรอกชื่อ-นามสกุล ไม่ต้องมีคำนำหน้าชื่อ" required>
+                <input type="text" class="form-control form-control-lg" name="fullname" id="fullname" placeholder="กรอกชื่อ-นามสกุล" required>
                 <div class="invalid-feedback fs-5">
                     กรุณาใส่ชื่อ-นามสกุล
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary mt-2 form-control-lg">ลงทะเบียน</button>
+            <!-- <div class="form-group">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">Symposium 1</label>
+
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">Symposium 2</label>
+            </div> -->
+            <button type="submit" class="btn btn-outline-dark mt-2 form-control-lg">ลงทะเบียน</button>
             <input type="hidden" name="action" value="regis">
         </form>
     </div>

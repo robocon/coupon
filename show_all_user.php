@@ -27,7 +27,7 @@ foreach($users AS $user){
         <span><?=$regis.$coupon;?></span>
 
         <div class="float-end">
-            <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
+            <a class="btn btn-link btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
         </div>
     </li>
     <?php

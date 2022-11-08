@@ -42,7 +42,8 @@
                     document.getElementById("qr-reader-results").innerHTML = qrResult;
                     
                 },
-                (errorMessage) => {
+                (errorMessage) => { 
+                    document.getElementById('qr-confirm').innerHTML = "Confirm Coupon: -";
                     // parse error, ignore it.
                 })
                 .catch((err) => {

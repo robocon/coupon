@@ -27,7 +27,7 @@ $show_id = sprintf("%03d", $user['id']);
     <script src="https://kit.fontawesome.com/6b4c2963a2.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="card d-flex justify-content-center w-100 border-0">
+<div class="justify-content-center" style="width: 72mm; border: 1px solid #000000!important;">
   <!-- <img class="card-img-top align-self-center" src="images/fork.png" alt="คูปองรับประทานอาหารทางวัน" style="width: 150px;"> -->
   <div class="card-body">
     <h5 class="card-title text-center">คูปองอาหารกลางวัน</h5>
