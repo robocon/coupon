@@ -10,6 +10,15 @@ $users2 = $q2->fetch_all(MYSQLI_ASSOC);
 
 $users = array_merge($users1, $users2);
 
+
+การลงทะเบียนจะแบ่งออกเป็น2ช่วงคือ
+ช่วงเช้า
+กับช่วงบ่าย
+
+ทีนี้ในฐานข้อมูลก็ต้องปรับให้เก็บเวลาเป็น2ช่วงเหมือนกัน
+morning
+afternoon
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,11 +145,13 @@ $users = array_merge($users1, $users2);
     
     var myFunction = function() { 
 
+        แจ้งว่าลงทะเบียนเรียบร้อย
+
         var id = this.getAttribute("data-id");
-        var Popup_Window = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=500,left = 312,top = 234');
+        // var Popup_Window = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=500,left = 312,top = 234');
         // this.target = 'Popup_Window';
         Popup_Window.addEventListener('load', function(){
-            Popup_Window.print();
+            // Popup_Window.print();
             // Popup_Window.close();
 
             // loadPage().then(testAlert);
