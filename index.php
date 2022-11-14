@@ -2,24 +2,24 @@
 require_once 'config.php';
 $dbi = new mysqli(HOST,USER,PASS,DB);
 $dbi->query("SET NAMES UTF8");
-$q = $dbi->query("SELECT * FROM `users` WHERE `status_regis` IS NULL");
+$q = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NULL");
 $users1 = $q->fetch_all(MYSQLI_ASSOC);
 
-$q2 = $dbi->query("SELECT * FROM `users` WHERE `status_regis` IS NOT NULL");
+$q2 = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NOT NULL");
 $users2 = $q2->fetch_all(MYSQLI_ASSOC);
 
 $users = array_merge($users1, $users2);
 
-!!! แยกการทำงานระหว่างตู้ kiosk กับ ลงทะเบียนผ่านมือถือ ออกจากกันไปเลยดีกว่า จะได้ไม่สับสนการทำงาน !!!
-- ตู้ มันจะฝัง id ตามปุ่มที่กดไว้อยู่แล้ว ก็กดๆ ไปได้เลยแค่เช็กตามเวลาเฉยๆ
+//  แยกการทำงานระหว่างตู้ kiosk กับ ลงทะเบียนผ่านมือถือ ออกจากกันไปเลยดีกว่า จะได้ไม่สับสนการทำงาน !!!
+// - ตู้ มันจะฝัง id ตามปุ่มที่กดไว้อยู่แล้ว ก็กดๆ ไปได้เลยแค่เช็กตามเวลาเฉยๆ
 
-การลงทะเบียนจะแบ่งออกเป็น2ช่วงคือ
-ช่วงเช้า
-กับช่วงบ่าย
+// การลงทะเบียนจะแบ่งออกเป็น2ช่วงคือ
+// ช่วงเช้า
+// กับช่วงบ่าย
 
-ทีนี้ในฐานข้อมูลก็ต้องปรับให้เก็บเวลาเป็น2ช่วงเหมือนกัน
-morning
-afternoon
+// ทีนี้ในฐานข้อมูลก็ต้องปรับให้เก็บเวลาเป็น2ช่วงเหมือนกัน
+// morning
+// afternoon
 
 ?>
 <!DOCTYPE html>
@@ -54,23 +54,23 @@ afternoon
     <div class="row">
         <div class="col-2" style="min-height: 800px;">
             <div class="position-sticky top-50 start-0 translate-middle">
-                <p><img src="printQrcode.php?id=https://0edb-159-192-141-216.ngrok.io/coupon/register.php" alt="qr code for register" class="w-100"></p>
-                <p class="text-center">ลงทะเบียนเพิ่มเติม</p>
+                <!-- <p><img src="printQrcode.php?id=https://0edb-159-192-141-216.ngrok.io/coupon/register.php" alt="qr code for register" class="w-100"></p>
+                <p class="text-center">ลงทะเบียนเพิ่มเติม</p> -->
             </div>
         </div>
         <div class="col-8">
             <div id="main-content">
                 <ul class="list-group" id="show-all-user">
                     <?php 
-                    /*
+                    
                     foreach($users AS $user){
                         $regis = '';
-                        if($user['status_regis']){
+                        if($user['morning']){
                             $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
                         }
 
                         $coupon = '';
-                        if($user['status_coupon']){
+                        if($user['afternoon']){
                             $coupon = '<i class="fas fa-utensils me-2 text-success"></i>';
                         }
                         ?>
@@ -80,13 +80,13 @@ afternoon
                             <span><?=$regis.$coupon;?></span>
 
                             <div class="float-end">
-                                <!-- <span><i class="fas fa-sync fa-spin me-2"></i></span> -->
-                                <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button">ลงทะเบียนและรับคูปอง</a>
+                                <span class="spinner-border spinner-border-sm" id="spinner<?=$user['id'];?>" role="status" aria-hidden="true" style="display:none"></span>
+                                <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button" onclick="testRegister('<?=$user['id'];?>')">ลงทะเบียน</a>
                             </div>
                         </li>
                         <?php
                     }
-                    */
+                    
                     ?>
                 </ul>
             </div>
@@ -104,7 +104,16 @@ afternoon
     </div>
 </div>
 
+<div class="modal-dialog modal-dialog-centered">
+  ...
+</div>
+
 <script>
+
+    // var elements = document.getElementsByClassName('print-sticker');
+    // for (var i = 0; i < elements.length; i++) {
+    //     elements[i].addEventListener('click', myFunction, false);
+    // }
 
     /**
      * ไอเดียเรื่องการแสดงผลและการ reload page 
@@ -121,7 +130,59 @@ afternoon
      * 
      */
 
-    loadPage();
+    // loadPage();
+
+    function testRegister(id){
+        
+        document.getElementById("spinner"+id).style.display = '';
+        console.log('before sendData '+id);
+
+        setTimeout(() => { 
+
+            sendData(id);
+
+            location.reload();
+        
+        }, 500);
+    
+        // sendData(id).then(result=>{
+            // console.log(result); 
+
+            // document.getElementById("spinner"+id).style.display = 'none';
+            // console.log('testRegister '+id);
+
+        // });
+        
+        
+        // if(res.data=='success'){ 
+            // document.getElementById("spinner"+id).style.display = 'none';
+        // }
+
+    }
+
+    async function sendData(id){ 
+
+        // return new Promise((resolve, reject) => { 
+            // setTimeout(() => { 
+                
+                // resolve("foo");
+
+                const response = await fetch('register_kiosk.php', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-type': 'application/x-www-form-urlencoded' 
+                    },
+                    body: JSON.stringify({'id': id})
+                });
+                var body = await response.text();
+
+                document.getElementById("spinner"+id).style.display = 'none';
+                console.log('after send  '+id);
+            // }, 1000);
+
+        // });
+
+    }
 
     async function loadPage(){ 
         let response = await fetch('show_all_user.php');
@@ -144,27 +205,41 @@ afternoon
             elements[i].addEventListener('click', myFunction, false);
         }
     }
+
     
-    var myFunction = function() { 
+    var myFunction = async function() { 
 
-        แจ้งว่าลงทะเบียนเรียบร้อย
-
+        // แจ้งว่าลงทะเบียนเรียบร้อย
         var id = this.getAttribute("data-id");
+        console.log(id);
+        document.getElementById("spinner"+id).style.display = '';
+
         // var Popup_Window = window.open('print_coupon.php?id='+id,'Popup_Window','toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=400,height=500,left = 312,top = 234');
         // this.target = 'Popup_Window';
-        Popup_Window.addEventListener('load', function(){
+        // Popup_Window.addEventListener('load', function(){
             // Popup_Window.print();
             // Popup_Window.close();
 
             // loadPage().then(testAlert);
-            loadPage();
+            // loadPage();
 
-        }, false);
+        // }, false);
+
+        // const response = await fetch('register_kiosk.php', {
+        //     method: 'POST',
+        //     headers: { 
+        //         'Content-type': 'application/x-www-form-urlencoded' 
+        //     },
+        //     body: JSON.stringify({'id': id})
+        // });
+        // var body = await response.text();
+        // var res = JSON.parse(body);
+
+        // if(res.data=='success'){ 
+        //     document.getElementById("spinner"+id).style.display = 'none';
+        //     // loadPage();
+        // }
     };
-
-    
-
-
 
     // ฟอร์มค้นหา
     document.getElementById("btnClose").onclick = function(){
@@ -180,8 +255,8 @@ afternoon
 
             var response = await fetch('find_user.php?search='+val);
 
-            if (!response.ok) {
-            }
+            // if (!response.ok) {
+            // }
 
             var body = await response.text();
             document.getElementById("show-sub-content").innerHTML = body;
@@ -190,14 +265,15 @@ afternoon
     }
 
     document.getElementById("search").addEventListener("keyup", (e)=>{
-        find_user(e.target.value).then(testAlert);
+        // find_user(e.target.value).then(testAlert);
+        find_user(e.target.value);
     });
 
 
     var sec = 1000;
     var min = 60 * sec;
     setInterval(() => {
-        loadPage();
+        // loadPage();
     }, (min * 3));
 
 </script>

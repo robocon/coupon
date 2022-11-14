@@ -1,5 +1,8 @@
 <?php 
 require_once 'config.php';
+$dbi = new mysqli(HOST,USER,PASS,DB);
+$dbi->query("SET NAMES UTF8");
+
 $action = $_POST['action'];
 
 /**
@@ -32,8 +35,7 @@ if($_COOKIE['SHS_COUPON']){
 }
 
 if($action=='regis'){ 
-    $dbi = new mysqli(HOST,USER,PASS,DB);
-    $dbi->query("SET NAMES UTF8");
+    
 
     $phone = sprintf("%s", $_POST['phone']);
     $q = $dbi->query("SELECT `id` FROM `users` WHERE `phone` = '$phone' ");
