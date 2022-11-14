@@ -13,13 +13,18 @@ if($action=='regis'){
         $_POST['part'] 
     );
     $save = $dbi->query($sql_insert);
-    dump($save);
+    $id = $dbi->insert_id;
 
-    ตั้ง cookie เอาไว้ แล้ว redirect ไปหน้า register_confirm.php
+    // dump($save);
 
-    register_confirm.php จะแบ่งหน้าตามเวลา หลัง 12.30 จะเป็นการ confirm สำหรับช่วงบ่าย 
-    
-    เสร็จก็จะเด้งไปหน้าแจ้งให้อยู่รอจับรางวัล
+    // ตั้ง cookie เอาไว้ แล้ว redirect ไปหน้า register_confirm.php
+    // register_confirm.php จะแบ่งหน้าตามเวลา หลัง 12.30 จะเป็นการ confirm สำหรับช่วงบ่าย 
+    // เสร็จก็จะเด้งไปหน้าแจ้งให้อยู่รอจับรางวัล
+
+    setcookie('SHS_ID', $id, time() + (86400 * 30), "/");
+    setcookie('SHS_PHONE', $phone, time() + (86400 * 30), "/");
+
+    header("Location: register_confirm.php?id=$id");
 
     exit;
 }

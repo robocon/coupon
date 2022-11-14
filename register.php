@@ -16,10 +16,12 @@ $action = $_POST['action'];
 
 
 
-if($_COOKIE['SHS_PHONE']){
+if($_COOKIE['SHS_ID']){
     // $check_phone = $_COOKIE['SHS_PHONE'];
     // $sql = sprintf("SELECT `id`,`phone`,`fullname`, `status_regis` WHERE `phone` = '%s';", $check_phone);
-
+    $id = $_COOKIE['SHS_ID'];
+    header("Location: register_confirm.php?id=$id");
+    exit;
 }
 
 if($_COOKIE['SHS_COUPON']){
