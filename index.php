@@ -2,11 +2,27 @@
 require_once 'config.php';
 $dbi = new mysqli(HOST,USER,PASS,DB);
 $dbi->query("SET NAMES UTF8");
-$q = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NULL");
-$users1 = $q->fetch_all(MYSQLI_ASSOC);
 
-$q2 = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NOT NULL");
-$users2 = $q2->fetch_all(MYSQLI_ASSOC);
+$time = date("H:i:s");
+if($time >= "06:00:00" && $time <= "12:15:00"){
+    $q = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NULL");
+    $users1 = $q->fetch_all(MYSQLI_ASSOC);
+
+    $q2 = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NOT NULL");
+    $users2 = $q2->fetch_all(MYSQLI_ASSOC);
+
+    $title = "ลงทะเบียนภาคเช้า";
+
+}elseif($time > "12:15:00" && $time <= "15:30:00"){
+    $q = $dbi->query("SELECT * FROM `users` WHERE `afternoon` IS NULL");
+    $users1 = $q->fetch_all(MYSQLI_ASSOC);
+
+    $q2 = $dbi->query("SELECT * FROM `users` WHERE `afternoon` IS NOT NULL");
+    $users2 = $q2->fetch_all(MYSQLI_ASSOC);
+
+    $title = "ลงทะเบียนภาคบ่าย";
+
+}
 
 $users = array_merge($users1, $users2);
 
@@ -54,8 +70,7 @@ $users = array_merge($users1, $users2);
     <div class="row">
         <div class="col-2" style="min-height: 800px;">
             <div class="position-sticky top-50 start-0 translate-middle">
-                <!-- <p><img src="printQrcode.php?id=https://0edb-159-192-141-216.ngrok.io/coupon/register.php" alt="qr code for register" class="w-100"></p>
-                <p class="text-center">ลงทะเบียนเพิ่มเติม</p> -->
+                <h2 class="text-center"><?=$title;?></h2>
             </div>
         </div>
         <div class="col-8">
