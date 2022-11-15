@@ -41,18 +41,14 @@ if($action=='regis'){
     $q = $dbi->query("SELECT `id` FROM `users` WHERE `phone` = '$phone' ");
     if($q->num_rows > 0){
         // มี user 
+        $user = $q->fetch_assoc();
+        $id = $user['id'];
+        $update = $dbi->query(sprintf("UPDATE `users` SET `morning`=NOW() WHERE (`id`='%s');", $id));
 
-        $sql_update = "UPDATE `users` SET `number`=NULL, 
-        `phone`='2508544928', 
-        `fullname`='นรุตมา วัชรกิจ', 
-        `job`=NULL, 
-        `part`=NULL, 
-        `morning`=NULL, 
-        `afternoon`=NULL, 
-        `status_regis`='y', 
-        `status_coupon`= NULL 
+        setcookie('SHS_ID', $id, time() + (86400 * 30), "/");
+        setcookie('SHS_PHONE', $phone, time() + (86400 * 30), "/");
 
-        WHERE (`id`='1');";
+        header("Location: register_confirm.php?id=$id");
 
     }else{
         header("Location: register_form2.php?phone=$phone");

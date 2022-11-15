@@ -4,7 +4,7 @@ $dbi = new mysqli(HOST,USER,PASS,DB);
 $dbi->query("SET NAMES UTF8");
 
 $search = $_REQUEST['search'];
-$sql = sprintf("SELECT * FROM `users` WHERE `morning` IS NULL AND (`phone` LIKE '%s%%' OR `fullname` LIKE '%s%%')", $_REQUEST['search'], $_REQUEST['search']);
+$sql = sprintf("SELECT * FROM `users` WHERE `phone` LIKE '%s%%' OR `fullname` LIKE '%%%s%%' ", $_REQUEST['search'], $_REQUEST['search']);
 $q = $dbi->query($sql);
 if ($q->num_rows > 0) {
     while ($user = $q->fetch_assoc()) {
