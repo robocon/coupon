@@ -5,24 +5,23 @@ $dbi->query("SET NAMES UTF8");
 
 $time = date("H:i:s");
 if($time >= "06:00:00" && $time <= "12:15:00"){
-    $q = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NULL");
-    $users1 = $q->fetch_all(MYSQLI_ASSOC);
 
-    $q2 = $dbi->query("SELECT * FROM `users` WHERE `morning` IS NOT NULL");
-    $users2 = $q2->fetch_all(MYSQLI_ASSOC);
-
-    $title = "ลงทะเบียนภาคเช้า";
+    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NULL");
+    $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NOT NULL");
+    
+    $title = "ลงทะเบียนประชุมวิชาการช่วงเช้า";
 
 }elseif($time > "12:15:00" && $time <= "15:30:00"){
-    $q = $dbi->query("SELECT * FROM `users` WHERE `afternoon` IS NULL");
-    $users1 = $q->fetch_all(MYSQLI_ASSOC);
 
-    $q2 = $dbi->query("SELECT * FROM `users` WHERE `afternoon` IS NOT NULL");
-    $users2 = $q2->fetch_all(MYSQLI_ASSOC);
+    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NULL");
+    $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NOT NULL");
 
-    $title = "ลงทะเบียนภาคบ่าย";
+    $title = "ลงทะเบียนประชุมวิชาการช่วงบ่าย";
 
 }
+
+$users1 = $q->fetch_all(MYSQLI_ASSOC);
+$users2 = $q2->fetch_all(MYSQLI_ASSOC);
 
 $users = array_merge($users1, $users2);
 
@@ -53,7 +52,10 @@ $users = array_merge($users1, $users2);
 </head>
 <body>
     
-<nav class="navbar fixed-top bg-light">
+<nav class="navbar fixed-top bg-success justify-content-center" style="--bs-bg-opacity: 1;">
+    <div class="row justify-content-center">
+        <h3 class="text-white"><?=$title;?></h3>
+    </div>
     <div class="container-fluid">
         <form class="d-flex w-100" role="search" id="formSearch" action="javascript:void(0);">
             <div class="input-group">
@@ -65,12 +67,12 @@ $users = array_merge($users1, $users2);
         </form>
     </div>
 </nav>
-<div class="container mt-5">
+<div class="container" style="margin-top: 8em;">
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-2" style="min-height: 800px;">
             <div class="position-sticky top-50 start-0 translate-middle">
-                <h2 class="text-center"><?=$title;?></h2>
+                <!-- <img src="images/LogoFSH.jpg" class="img-fluid"> -->
             </div>
         </div>
         <div class="col-8">
@@ -86,7 +88,7 @@ $users = array_merge($users1, $users2);
 
                         $coupon = '';
                         if($user['afternoon']){
-                            $coupon = '<i class="fas fa-utensils me-2 text-success"></i>';
+                            $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
                         }
                         ?>
                         <li class="list-group-item">
@@ -96,7 +98,7 @@ $users = array_merge($users1, $users2);
 
                             <div class="float-end">
                                 <span class="spinner-border spinner-border-sm" id="spinner<?=$user['id'];?>" role="status" aria-hidden="true" style="display:none"></span>
-                                <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button" onclick="testRegister('<?=$user['id'];?>')">ลงทะเบียน</a>
+                                <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button" onclick="testRegister('<?=$user['id'];?>')" >ลงทะเบียน</a>
                             </div>
                         </li>
                         <?php
@@ -119,34 +121,43 @@ $users = array_merge($users1, $users2);
     </div>
 </div>
 
-<div class="modal-dialog modal-dialog-centered">
-  ...
+<div id="notify-register-success" style="display:none; position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0000006e;
+    z-index: 99;">
+    <div style="position: absolute;
+    padding: 3em;
+    background-color: #ffffff;
+    border-radius: 14px;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);">
+        <div>
+            <h3>ดำเนินการลงทะเบียนเรียบร้อย</h3>
+        </div>
+    </div>
 </div>
 
 <script>
 
-    // var elements = document.getElementsByClassName('print-sticker');
-    // for (var i = 0; i < elements.length; i++) {
-    //     elements[i].addEventListener('click', myFunction, false);
-    // }
+// document.addEventListener('DOMContentLoaded', function () {
+//     var staticBackdrop = new bootstrap.Modal('#staticBackdrop', {keyboard: false});
+// });
 
     /**
-     * ไอเดียเรื่องการแสดงผลและการ reload page 
-     * - เปิดหน้าจอมาครั้งแรกให้ทำงานผ่าน onload แล้วไปเรียกฟังก์ชั่นที่โหลดรายชื่อมาแสดง
-     * - หลังจากกดปุ่มขอคูปอง ให้เรียกฟังก์ชั่นที่โหลดรายชื่อมาทับใน div ตัวปัจจุบัน
-     * 
-     * หน้าที่แสดงรายชื่อปัจจุบัน
-     * เป็นคำสั่งตัวเดิมที่แยกรายการออกเป็นสองส่วน คือด้านบนเป็นคนที่ยังไม่ได้กดคูปอง ส่วนด้านล่างเป็นชื่อคนที่กดคูปองไปเรียบร้อยแล้ว
-     * 
      * 
      * เรื่องการให้ js อ่าน qr code
      * https://minhazav.medium.com/qr-code-scanner-using-html-and-javascript-3895a0c110cd
      * 
-     * 
      */
 
     // loadPage();
-
+    
+    // คลิกที่ปุ่มลงทะเบียน
     function testRegister(id){
         
         document.getElementById("spinner"+id).style.display = '';
@@ -154,9 +165,13 @@ $users = array_merge($users1, $users2);
 
         setTimeout(() => { 
 
-            sendData(id);
+            sendData(id).then(()=>{
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            });
 
-            location.reload();
+            
         
         }, 500);
     
@@ -191,8 +206,36 @@ $users = array_merge($users1, $users2);
                 });
                 var body = await response.text();
 
-                document.getElementById("spinner"+id).style.display = 'none';
-                console.log('after send  '+id);
+                var res = JSON.parse(body);
+                console.log(res);
+                if(res.data == "success"){
+                    document.getElementById("notify-register-success").style.display = '';
+
+                    setTimeout(() => {
+                        document.getElementById("notify-register-success").style.display = 'none';
+                    }, 1500);
+
+
+                    document.getElementById("spinner"+id).style.display = 'none';
+                    console.log('after update  register_kiosk.php get ID='+id);
+
+                }
+                // 
+
+//                 const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'),{
+//   keyboard: false
+// });
+
+                
+                // staticBackdrop.show();
+                // setTimeout(() => {
+                    // document.getElementById("staticBackdrop").mo
+                    
+                    
+
+                // }, 2000);
+
+                
             // }, 1000);
 
         // });
