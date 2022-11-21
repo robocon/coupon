@@ -35,6 +35,13 @@ $users = array_merge($users1, $users2);
 // ทีนี้ในฐานข้อมูลก็ต้องปรับให้เก็บเวลาเป็น2ช่วงเหมือนกัน
 // morning
 // afternoon
+/*
+background-image: url(images/bg-a4-01.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 800px;
+*/
 
 ?>
 <!DOCTYPE html>
@@ -51,7 +58,15 @@ $users = array_merge($users1, $users2);
     <script src="https://kit.fontawesome.com/6b4c2963a2.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    
+<style>
+    body{
+        background-image: url(images/bg-a4-01.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 800px;
+    }
+</style>
 <nav class="navbar fixed-top bg-success justify-content-center" style="--bs-bg-opacity: 1;">
     <div class="row justify-content-center">
         <h3 class="text-white"><?=$title;?></h3>
@@ -91,7 +106,7 @@ $users = array_merge($users1, $users2);
                             $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
                         }
                         ?>
-                        <li class="list-group-item">
+                        <li class="list-group-item bg-transparent">
                             
                             <span class="me-2 fs-2"><?=$user['fullname'];?></span>
                             <span><?=$regis.$coupon;?></span>

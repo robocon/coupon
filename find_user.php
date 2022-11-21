@@ -26,7 +26,7 @@ if ($q->num_rows > 0) {
         }
         
         ?>
-        <li class="list-group-item">
+        <li class="list-group-item bg-transparent">
             <span class="me-2 fs-2"><?=$user['fullname'];?></span>
             <span><?=$regis;?></span>
             <div class="float-end">
