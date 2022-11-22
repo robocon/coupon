@@ -3,8 +3,8 @@ require_once 'config.php';
 $dbi = new mysqli(HOST,USER,PASS,DB);
 $dbi->query("SET NAMES UTF8");
 
-$q = $dbi->query("SELECT * FROM `users` WHERE `morning` <> '' ORDER BY `morning` ASC");
-$q2 = $dbi->query("SELECT * FROM `users` WHERE `afternoon` <> '' ORDER BY `afternoon` ASC");
+$q = $dbi->query("SELECT *,SUBSTRING(`morning`,12) AS `time` FROM `users` WHERE `morning` <> '' ORDER BY `morning` DESC");
+$q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHERE `afternoon` <> '' ORDER BY `afternoon` DESC");
 
 ?>
 <!DOCTYPE html>
@@ -24,39 +24,50 @@ $q2 = $dbi->query("SELECT * FROM `users` WHERE `afternoon` <> '' ORDER BY `after
     <div class="container-fluid">
         <h3>รายชื่อช่วงเช้า</h3>
         <div>
-            <table class="table">
+            <table class="table table-striped">
                 <tr>
                     <th scope="col">ชื่อ-สกุล</th>
                     <th scope="col">เบอร์โทร</th>
                     <th scope="col">เวลาที่เข้าร่วมประชุม</th>
                 </tr>
-            <?php 
-            if ($q->num_rows > 0) {
-                while ($u = $q->fetch_assoc()) {
-                    // dump($u);
-                    ?>
-                    <tr>
-                        <td><?=$u['fullname'];?></td>
-                        <td><?=$u['phone'];?></td>
-                        <td><?=$u['morning'];?></td>
-                    </tr>
-                    <?php
+                <?php 
+                if ($q->num_rows > 0) {
+                    while ($u = $q->fetch_assoc()) {
+                        ?>
+                        <tr>
+                            <td><?=$u['fullname'];?></td>
+                            <td><?=$u['phone'];?></td>
+                            <td><?=$u['time'];?> น.</td>
+                        </tr>
+                        <?php
+                    }
                 }
-            }
-            ?>
+                ?>
             </table>
         </div>
-    <h3>รายชื่อช่วงบ่าย</h3>
-    <?php
-
-    if ($q2->num_rows > 0) {
-        while ($u2 = $q2->fetch_assoc()) {
-            dump($u2);
-            # code...
-        }
-        # code...
-    }
-    ?>
+        <h3>รายชื่อช่วงบ่าย</h3>
+        <div>
+            <table class="table table-striped">
+                <tr>
+                    <th scope="col">ชื่อ-สกุล</th>
+                    <th scope="col">เบอร์โทร</th>
+                    <th scope="col">เวลาที่เข้าร่วมประชุม</th>
+                </tr>
+                <?php
+                if ($q2->num_rows > 0) {
+                    while ($u2 = $q2->fetch_assoc()) {
+                        ?>
+                        <tr>
+                            <td><?=$u2['fullname'];?></td>
+                            <td><?=$u2['phone'];?></td>
+                            <td><?=$u2['time'];?> น.</td>
+                        </tr>
+                        <?php
+                    }
+                }
+                ?>
+            </table>
+        </div>
     </div>
 </body>
 </html>
