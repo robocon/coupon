@@ -4,14 +4,15 @@ $dbi = new mysqli(HOST,USER,PASS,DB);
 $dbi->query("SET NAMES UTF8");
 
 $time = date("H:i:s");
-if($time >= "06:00:00" && $time <= "12:15:00"){
+
+if($time <= "12:15:00"){
 
     $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NULL");
     $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NOT NULL");
     
     $title = "ลงทะเบียนประชุมวิชาการช่วงเช้า";
 
-}elseif($time > "12:15:00" && $time <= "15:30:00"){
+}elseif($time > "12:15:00"){
 
     $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NULL");
     $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NOT NULL");
