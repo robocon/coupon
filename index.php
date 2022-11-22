@@ -7,24 +7,24 @@ $time = date("H:i:s");
 
 if($time <= "12:15:00"){
 
-    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NULL");
-    $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NOT NULL");
+    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NULL ORDER BY `fullname` ASC");
+    // $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NOT NULL");
     
     $title = "ลงทะเบียนประชุมวิชาการช่วงเช้า";
 
 }elseif($time > "12:15:00"){
 
-    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NULL");
-    $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NOT NULL");
+    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NULL ORDER BY `fullname` ASC");
+    // $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NOT NULL");
 
     $title = "ลงทะเบียนประชุมวิชาการช่วงบ่าย";
 
 }
 
-$users1 = $q->fetch_all(MYSQLI_ASSOC);
-$users2 = $q2->fetch_all(MYSQLI_ASSOC);
+$users = $q->fetch_all(MYSQLI_ASSOC);
+// $users2 = $q2->fetch_all(MYSQLI_ASSOC);
 
-$users = array_merge($users1, $users2);
+// $users = array_merge($users1, $users2);
 
 //  แยกการทำงานระหว่างตู้ kiosk กับ ลงทะเบียนผ่านมือถือ ออกจากกันไปเลยดีกว่า จะได้ไม่สับสนการทำงาน !!!
 // - ตู้ มันจะฝัง id ตามปุ่มที่กดไว้อยู่แล้ว ก็กดๆ ไปได้เลยแค่เช็กตามเวลาเฉยๆ
@@ -62,23 +62,25 @@ background-image: url(images/bg-a4-01.jpg);
 <style>
     body{
         background-image: url(images/bg-a4-01.jpg);
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 800px;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 800px;
     }
 </style>
 <nav class="navbar fixed-top bg-success justify-content-center" style="--bs-bg-opacity: 1;">
     <div class="row justify-content-center">
-        <h3 class="text-white"><?=$title;?></h3>
+        <h1 class="text-white"><?=$title;?></h1>
     </div>
     <div class="container-fluid">
-        <form class="d-flex w-100" role="search" id="formSearch" action="javascript:void(0);">
+        <form class="d-flex w-100" role="search" method="post" name="formSearch" id="formSearch" action="javascript:void(0);">
             <div class="input-group">
-                <input type="text" class="form-control form-control-lg" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเบอร์โทร หรือ ชื่อ-นามสกุล">
-                <button type="button" class="btn bg-transparent" id="btnClose" style="margin-left: -40px; z-index: 100;">
-                <i class="fa fa-times"></i>
+                <input type="text" class="form-control form-control-lg" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเบอร์โทร หรือ ชื่อ-นามสกุล" onclick="popNumber()">
+
+                <button type="button" class="btn btn-light" id="btnClose" >
+                    <i class="fa fa-times"></i>
                 </button>
+                <button class="btn btn-secondary" type="button" id="button-addon2" onclick="findNumber()"><i class="fas fa-search"></i></button>
             </div>
         </form>
     </div>
@@ -86,12 +88,12 @@ background-image: url(images/bg-a4-01.jpg);
 <div class="container" style="margin-top: 8em;">
     <div class="row">&nbsp;</div>
     <div class="row">
-        <div class="col-2" style="min-height: 800px;">
+        <div class="col-1" style="min-height: 800px;">
             <div class="position-sticky top-50 start-0 translate-middle">
                 <!-- <img src="images/LogoFSH.jpg" class="img-fluid"> -->
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-10">
             <div id="main-content">
                 <ul class="list-group" id="show-all-user">
                     <?php 
@@ -109,12 +111,12 @@ background-image: url(images/bg-a4-01.jpg);
                         ?>
                         <li class="list-group-item bg-transparent">
                             
-                            <span class="me-2 fs-2"><?=$user['fullname'];?></span>
+                            <span class="me-2 fs-1"><?=$user['fullname'];?></span>
                             <span><?=$regis.$coupon;?></span>
 
                             <div class="float-end">
                                 <span class="spinner-border spinner-border-sm" id="spinner<?=$user['id'];?>" role="status" aria-hidden="true" style="display:none"></span>
-                                <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button" onclick="testRegister('<?=$user['id'];?>')" >ลงทะเบียน</a>
+                                <a class="btn btn-success btn-lg fs-1 print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" role="button" onclick="testRegister('<?=$user['id'];?>')" >ลงทะเบียน</a>
                             </div>
                         </li>
                         <?php
@@ -128,7 +130,7 @@ background-image: url(images/bg-a4-01.jpg);
                 <ul>
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-1">
             <div class="sticky-top pt-5">
                 <!-- <p><img src="images/qrcode-regis.png" alt="qr code for register" class="align-self-center w-100"></p>
                 <p class="text-center">...</p> -->
@@ -145,7 +147,7 @@ background-image: url(images/bg-a4-01.jpg);
     background-color: #0000006e;
     z-index: 99;">
     <div style="position: absolute;
-    padding: 3em;
+    padding: 2em;
     background-color: #ffffff;
     border-radius: 14px;
     top: 50%;
@@ -153,7 +155,7 @@ background-image: url(images/bg-a4-01.jpg);
     text-align: center;
     transform: translate(-50%, -50%);">
         <div>
-            <h3>ดำเนินการลงทะเบียนเรียบร้อย</h3>
+            <h1>ดำเนินการลงทะเบียนเรียบร้อย</h1>
         </div>
     </div>
 </div>
@@ -343,17 +345,35 @@ background-image: url(images/bg-a4-01.jpg);
         }
     }
 
-    document.getElementById("search").addEventListener("keyup", (e)=>{
-        // find_user(e.target.value).then(testAlert);
+    document.getElementById("search").addEventListener("input", (e)=>{
         find_user(e.target.value);
     });
 
+    document.getElementById("formSearch").addEventListener("submit", (e)=>{
+        var num = document.getElementById("search").value;
+        find_user(num);
+    });
 
-    var sec = 1000;
-    var min = 60 * sec;
-    setInterval(() => {
-        // loadPage();
-    }, (min * 3));
+    function submitForm(){
+        alert(1234);
+        document.getElementById("formSearch").submit();
+    }
+    
+
+    function findNumber(){
+        var num = document.getElementById("search").value;
+        find_user(num);
+    }
+
+    function popNumber(){
+        var myWindow = window.open("number.php", "myWindow", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,copyhistory=no,top=600,left=0,width=300,height=330");
+    }
+
+    // var sec = 1000;
+    // var min = 60 * sec;
+    // setInterval(() => {
+    //     // loadPage();
+    // }, (min * 3));
 
 </script>
 </body>
