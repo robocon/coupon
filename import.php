@@ -22,12 +22,12 @@ if($action=="import"){
     $new_users = array();
     foreach ($items as $key => $item) {
         if (!empty($item)) { 
-            list($yot,$name,$job,$part,$phone) = explode(',', toThai($item));
+            list($yot,$name,$job,$part,$phone,$type) = explode(',', toThai($item));
             $name = preg_replace("/\s+/i", ' ', $name);
             $fullName = $yot.$name;
             $phone = str_replace(array("-",' '), '', $phone);
             
-            $new_users[$phone] = array($yot,$phone,$name,$job,$part);
+            $new_users[$phone] = array($yot,$phone,$name,$job,$part, $type);
         }
         
     }
@@ -39,11 +39,12 @@ if($action=="import"){
         $name = $u['2'];
         $job = $u['3'];
         $part = $u['4'];
+        $type = $u['5'];
 
         $sql = "INSERT INTO `users` (
-            `id`, `yot`, `phone`, `fullname`, `job`, `part`, `morning`, `afternoon`
+            `id`, `yot`, `phone`, `fullname`, `job`, `part`,`type`, `morning`, `afternoon`
         ) VALUES (
-            NULL, '$yot', '$phone', '$name', '$job', '$part', NULL, NULL 
+            NULL, '$yot', '$phone', '$name', '$job', '$part','$type', NULL, NULL 
         );";
         $insert = $dbi->query($sql);
         dump($insert);

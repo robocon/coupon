@@ -6,7 +6,7 @@ $dbi->query("SET NAMES UTF8");
 $search = $_REQUEST['search'];
 
 $time = date("H:i:s");
-$sql = sprintf("SELECT * FROM `users` WHERE `phone` LIKE '%s%%' OR `fullname` LIKE '%%%s%%' ", $_REQUEST['search'], $_REQUEST['search']);
+$sql = sprintf("SELECT * FROM `users` WHERE `phone` LIKE '%s%%' AND `type`='onsite' ", $_REQUEST['search']);
 
 $q = $dbi->query($sql);
 if ($q->num_rows > 0) {

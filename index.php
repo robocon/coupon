@@ -7,14 +7,14 @@ $time = date("H:i:s");
 
 if($time <= "12:15:00"){
 
-    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NULL ORDER BY `fullname` ASC");
+    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `type`='onsite' AND `morning` IS NULL ORDER BY `fullname` ASC");
     // $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NOT NULL");
     
     $title = "ลงทะเบียนประชุมวิชาการช่วงเช้า";
 
 }elseif($time > "12:15:00"){
 
-    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NULL ORDER BY `fullname` ASC");
+    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `type`='onsite' AND `afternoon` IS NULL ORDER BY `fullname` ASC");
     // $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NOT NULL");
 
     $title = "ลงทะเบียนประชุมวิชาการช่วงบ่าย";
@@ -372,9 +372,9 @@ background-image: url(images/bg-a4-01.jpg);
 
     function popNumber(){ 
         
-        // myModal.show();
+        myModal.show();
         
-        var myWindow = window.open("number.php", "myWindow", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,copyhistory=no,top=600,left=0,width=300,height=300");
+        // var myWindow = window.open("number.php", "myWindow", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,copyhistory=no,top=600,left=0,width=300,height=300");
     }
 
     // var sec = 1000;
