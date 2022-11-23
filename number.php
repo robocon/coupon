@@ -29,11 +29,9 @@
             <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(9)">9</button>
         </div>
         <div class="row gap-2" style="margin-top:1em;">
+            <div class="col"></div>
             <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(0)">0</button>
-            <button type="button" class="col btn btn-secondary btn-lg" onclick="removeValue()">ลบ</button>
-        </div>
-        <div class="row gap-2" style="margin-top:1em;">
-            <button type="button" class="col btn btn-secondary btn-lg" id="testSearchNum" onclick="searchNum()">ค้นหา</button>
+            <button type="button" class="col btn btn-light btn-lg text-danger" onclick="removeValue()">ลบ</button>
         </div>
     </div>
     <script>

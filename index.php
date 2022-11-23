@@ -75,7 +75,7 @@ background-image: url(images/bg-a4-01.jpg);
     <div class="container-fluid">
         <form class="d-flex w-100" role="search" method="post" name="formSearch" id="formSearch" action="javascript:void(0);">
             <div class="input-group">
-                <input type="text" class="form-control form-control-lg" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเบอร์โทร หรือ ชื่อ-นามสกุล" onclick="popNumber()">
+                <input type="text" class="form-control form-control-lg" name="search" id="search" autocomplete="off" placeholder="ค้นหาจากเบอร์โทร" onclick="popNumber()">
 
                 <button type="button" class="btn btn-light" id="btnClose" >
                     <i class="fa fa-times"></i>
@@ -138,33 +138,76 @@ background-image: url(images/bg-a4-01.jpg);
         </div>
     </div>
 </div>
-
-<div id="notify-register-success" style="display:none; position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0000006e;
-    z-index: 99;">
-    <div style="position: absolute;
-    padding: 2em;
-    background-color: #ffffff;
-    border-radius: 14px;
-    top: 50%;
-    left: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);">
+<!-- กดเลข -->
+<div class="modal" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ค้นหาจากเบอร์โทร</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row gap-2" style="margin-top:1em;">
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(1)">1</button>
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(2)">2</button>
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(3)">3</button>
+                    </div>
+                    <div class="row gap-2" style="margin-top:1em;">
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(4)">4</button>
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(5)">5</button>
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(6)">6</button>
+                    </div>
+                    <div class="row gap-2" style="margin-top:1em;">
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(7)">7</button>
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(8)">8</button>
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(9)">9</button>
+                    </div>
+                    <div class="row gap-2" style="margin-top:1em;">
+                        <div class="col"></div>
+                        <button type="button" class="col btn btn-secondary btn-lg" onclick="setValue(0)">0</button>
+                        <button type="button" class="col btn btn-light btn-lg text-danger" onclick="removeValue()">ลบ</button>
+                    </div>
+                    <div class="row gap-2" style="margin-top:1em;">
+                        <button type="button" class="col btn btn-success btn-lg" id="testSearchNum" onclick="searchNum()">ค้นหา</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- แจ้งเตือนลงทะเบียนสำเร็จ -->
+<div id="notify-register-success" style="display:none; position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: #0000006e;z-index: 99;">
+    <div style="position: absolute;padding: 2em;background-color: #ffffff;border-radius: 14px;top: 50%;left: 50%;text-align: center;transform: translate(-50%, -50%);">
         <div>
             <h1>ดำเนินการลงทะเบียนเรียบร้อย</h1>
         </div>
     </div>
 </div>
-
 <script>
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     var staticBackdrop = new bootstrap.Modal('#staticBackdrop', {keyboard: false});
-// });
+    const myModal = new bootstrap.Modal(document.getElementById('exampleModal'),{
+        keyboard: true, 
+        backdrop: false
+    });
+
+    function setValue(id){ 
+        var s = document.getElementById("search");
+        s.value+=id;
+    }
+
+    function removeValue(){
+        // var num = opener.document.formSearch.search.value;
+        var s = document.getElementById("search");
+        var num = s.value.slice(0, -1);
+        s.value=num;
+    }
+
+    function searchNum(){
+        var num = document.getElementById("search").value;
+        find_user(num);
+        myModal.hide();
+    }
 
     /**
      * 
@@ -192,71 +235,35 @@ background-image: url(images/bg-a4-01.jpg);
             
         
         }, 500);
-    
-        // sendData(id).then(result=>{
-            // console.log(result); 
 
-            // document.getElementById("spinner"+id).style.display = 'none';
-            // console.log('testRegister '+id);
-
-        // });
-        
-        
-        // if(res.data=='success'){ 
-            // document.getElementById("spinner"+id).style.display = 'none';
-        // }
 
     }
 
     async function sendData(id){ 
 
-        // return new Promise((resolve, reject) => { 
-            // setTimeout(() => { 
-                
-                // resolve("foo");
+        const response = await fetch('register_kiosk.php', {
+            method: 'POST',
+            headers: { 
+                'Content-type': 'application/x-www-form-urlencoded' 
+            },
+            body: JSON.stringify({'id': id})
+        });
+        var body = await response.text();
 
-                const response = await fetch('register_kiosk.php', {
-                    method: 'POST',
-                    headers: { 
-                        'Content-type': 'application/x-www-form-urlencoded' 
-                    },
-                    body: JSON.stringify({'id': id})
-                });
-                var body = await response.text();
+        var res = JSON.parse(body);
+        console.log(res);
+        if(res.data == "success"){
+            document.getElementById("notify-register-success").style.display = '';
 
-                var res = JSON.parse(body);
-                console.log(res);
-                if(res.data == "success"){
-                    document.getElementById("notify-register-success").style.display = '';
-
-                    setTimeout(() => {
-                        document.getElementById("notify-register-success").style.display = 'none';
-                    }, 1500);
+            setTimeout(() => {
+                document.getElementById("notify-register-success").style.display = 'none';
+            }, 1500);
 
 
-                    document.getElementById("spinner"+id).style.display = 'none';
-                    console.log('after update  register_kiosk.php get ID='+id);
+            document.getElementById("spinner"+id).style.display = 'none';
+            console.log('after update  register_kiosk.php get ID='+id);
 
-                }
-                // 
-
-//                 const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'),{
-//   keyboard: false
-// });
-
-                
-                // staticBackdrop.show();
-                // setTimeout(() => {
-                    // document.getElementById("staticBackdrop").mo
-                    
-                    
-
-                // }, 2000);
-
-                
-            // }, 1000);
-
-        // });
+        }
 
     }
 
@@ -331,9 +338,6 @@ background-image: url(images/bg-a4-01.jpg);
 
             var response = await fetch('find_user.php?search='+val);
 
-            // if (!response.ok) {
-            // }
-
             var body = await response.text();
             document.getElementById("show-sub-content").innerHTML = body;
             document.getElementById("sub-content").style.display = '';
@@ -343,6 +347,7 @@ background-image: url(images/bg-a4-01.jpg);
             document.getElementById("main-content").style.display = '';
 
         }
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
     }
 
     document.getElementById("search").addEventListener("input", (e)=>{
@@ -355,8 +360,8 @@ background-image: url(images/bg-a4-01.jpg);
     });
 
     function submitForm(){
-        alert(1234);
-        document.getElementById("formSearch").submit();
+        // alert(1234);
+        // document.getElementById("formSearch").submit();
     }
     
 
@@ -365,8 +370,11 @@ background-image: url(images/bg-a4-01.jpg);
         find_user(num);
     }
 
-    function popNumber(){
-        var myWindow = window.open("number.php", "myWindow", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,copyhistory=no,top=600,left=0,width=300,height=330");
+    function popNumber(){ 
+        
+        // myModal.show();
+        
+        var myWindow = window.open("number.php", "myWindow", "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,copyhistory=no,top=600,left=0,width=300,height=300");
     }
 
     // var sec = 1000;

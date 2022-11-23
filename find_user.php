@@ -27,11 +27,11 @@ if ($q->num_rows > 0) {
         
         ?>
         <li class="list-group-item bg-transparent">
-            <span class="me-2 fs-2"><?=$user['fullname'];?></span>
+            <span class="me-2 fs-1"><?=$user['fullname'];?></span>
             <span><?=$regis;?></span>
             <div class="float-end">
             <span class="spinner-border spinner-border-sm" id="spinner<?=$user['id'];?>" role="status" aria-hidden="true" style="display:none"></span>
-                <a class="btn btn-success btn-sm print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" onclick="testRegister('<?=$user['id'];?>')" role="button">ลงทะเบียน</a>
+                <a class="btn btn-success btn-lg print-sticker fs-4" data-id="<?=$user['id'];?>" href="javascript:void(0);" onclick="testRegister('<?=$user['id'];?>')" role="button">ลงทะเบียน</a>
             </div>
         </li>
         <?php
