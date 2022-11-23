@@ -28,6 +28,8 @@ $q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHE
                 <tr>
                     <th scope="col">ชื่อ-สกุล</th>
                     <th scope="col">เบอร์โทร</th>
+                    <th scope="col">อาชีพ</th>
+                    <th scope="col">หน่วยงาน</th>
                     <th scope="col">เวลาที่เข้าร่วมประชุม</th>
                 </tr>
                 <?php 
@@ -35,8 +37,10 @@ $q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHE
                     while ($u = $q->fetch_assoc()) {
                         ?>
                         <tr>
-                            <td><?=$u['fullname'];?></td>
+                            <td><?=$u['yot'].$u['fullname'];?></td>
                             <td><?=$u['phone'];?></td>
+                            <td><?=$u['job'];?></td>
+                            <td><?=$u['part'];?></td>
                             <td><?=$u['time'];?> น.</td>
                         </tr>
                         <?php
@@ -51,6 +55,8 @@ $q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHE
                 <tr>
                     <th scope="col">ชื่อ-สกุล</th>
                     <th scope="col">เบอร์โทร</th>
+                    <th scope="col">อาชีพ</th>
+                    <th scope="col">หน่วยงาน</th>
                     <th scope="col">เวลาที่เข้าร่วมประชุม</th>
                 </tr>
                 <?php
@@ -58,8 +64,10 @@ $q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHE
                     while ($u2 = $q2->fetch_assoc()) {
                         ?>
                         <tr>
-                            <td><?=$u2['fullname'];?></td>
+                            <td><?=$u2['yot'].$u2['fullname'];?></td>
                             <td><?=$u2['phone'];?></td>
+                            <td><?=$u2['job'];?></td>
+                            <td><?=$u2['part'];?></td>
                             <td><?=$u2['time'];?> น.</td>
                         </tr>
                         <?php
