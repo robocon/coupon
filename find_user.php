@@ -6,20 +6,24 @@ $dbi->query("SET NAMES UTF8");
 $search = $_REQUEST['search'];
 
 $time = date("H:i:s");
-$sql = sprintf("SELECT * FROM `users` WHERE `phone` LIKE '%s%%' AND `type`='onsite' ", $_REQUEST['search']);
 
+if($time <= "12:00:00"){
+    $sql = sprintf("SELECT * FROM `users` WHERE `phone` LIKE '%s%%' AND `type`='onsite' AND `morning` IS NULL ", $_REQUEST['search']);
+}elseif($time > "12:00:00"){
+    $sql = sprintf("SELECT * FROM `users` WHERE `phone` LIKE '%s%%' AND `type`='onsite' AND `afternoon` IS NULL  ", $_REQUEST['search']);
+}
 $q = $dbi->query($sql);
 if ($q->num_rows > 0) {
     while ($user = $q->fetch_assoc()) {
         $regis = '';
 
-        if($time >= "06:00:00" && $time <= "12:15:00"){
+        if($time >= "06:00:00" && $time <= "12:00:00"){
 
             if($user['morning']){
                 $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
             }
 
-        }elseif($time > "12:15:00" && $time <= "15:30:00"){
+        }elseif($time > "12:00:00" && $time <= "15:30:00"){
             if($user['afternoon']){
                 $regis = '<i class="fas fa-user-check me-2 text-success"></i>';
             }

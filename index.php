@@ -5,16 +5,21 @@ $dbi->query("SET NAMES UTF8");
 
 $time = date("H:i:s");
 
-if($time <= "12:15:00"){
+if($time <= "12:00:00"){
 
     $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `type`='onsite' AND `morning` IS NULL ORDER BY `fullname` ASC");
     // $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`morning` FROM `users` WHERE `morning` IS NOT NULL");
     
     $title = "ลงทะเบียนประชุมวิชาการช่วงเช้า";
 
-}elseif($time > "12:15:00"){
+}elseif($time > "12:00:00"){
 
-    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `type`='onsite' AND `afternoon` IS NULL ORDER BY `fullname` ASC");
+    $q = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` 
+    FROM `users` 
+    WHERE `type`='onsite' 
+    AND `afternoon` IS NULL 
+    GROUP BY `fullname` 
+    ORDER BY `fullname` ASC");
     // $q2 = $dbi->query("SELECT `id`,`phone`,`fullname`,`job`,`part`,`afternoon` FROM `users` WHERE `afternoon` IS NOT NULL");
 
     $title = "ลงทะเบียนประชุมวิชาการช่วงบ่าย";

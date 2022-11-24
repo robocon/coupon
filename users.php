@@ -3,8 +3,8 @@ require_once 'config.php';
 $dbi = new mysqli(HOST,USER,PASS,DB);
 $dbi->query("SET NAMES UTF8");
 
-$q = $dbi->query("SELECT *,SUBSTRING(`morning`,12) AS `time` FROM `users` WHERE `morning` <> '' ORDER BY `morning` DESC");
-$q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHERE `afternoon` <> '' ORDER BY `afternoon` DESC");
+$q = $dbi->query("SELECT *,SUBSTRING(`morning`,12) AS `time` FROM `users` WHERE `morning` <> '' GROUP BY `fullname` ORDER BY `type` ASC, `morning` DESC");
+$q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHERE `afternoon` <> '' GROUP BY `fullname` ORDER BY `type` ASC, `afternoon` DESC");
 
 ?>
 <!DOCTYPE html>
@@ -22,60 +22,70 @@ $q2 = $dbi->query("SELECT *,SUBSTRING(`afternoon`,12) AS `time` FROM `users` WHE
 </head>
 <body>
     <div class="container-fluid">
-        <h3>รายชื่อช่วงเช้า</h3>
+    <h3>รายชื่อช่วงบ่าย</h3>
         <div>
             <table class="table table-striped">
                 <tr>
+                    <th scope="col"></th>
                     <th scope="col">ชื่อ-สกุล</th>
                     <th scope="col">เบอร์โทร</th>
-                    <th scope="col">อาชีพ</th>
                     <th scope="col">หน่วยงาน</th>
+                    <th scope="col">ประเภท</th>
                     <th scope="col">เวลาที่เข้าร่วมประชุม</th>
                 </tr>
                 <?php 
-                if ($q->num_rows > 0) {
-                    while ($u = $q->fetch_assoc()) {
-                        ?>
-                        <tr>
-                            <td><?=$u['yot'].$u['fullname'];?></td>
-                            <td><?=$u['phone'];?></td>
-                            <td><?=$u['job'];?></td>
-                            <td><?=$u['part'];?></td>
-                            <td><?=$u['time'];?> น.</td>
-                        </tr>
-                        <?php
-                    }
-                }
-                ?>
-            </table>
-        </div>
-        <h3>รายชื่อช่วงบ่าย</h3>
-        <div>
-            <table class="table table-striped">
-                <tr>
-                    <th scope="col">ชื่อ-สกุล</th>
-                    <th scope="col">เบอร์โทร</th>
-                    <th scope="col">อาชีพ</th>
-                    <th scope="col">หน่วยงาน</th>
-                    <th scope="col">เวลาที่เข้าร่วมประชุม</th>
-                </tr>
-                <?php
+                $ii = 1;
                 if ($q2->num_rows > 0) {
                     while ($u2 = $q2->fetch_assoc()) {
                         ?>
                         <tr>
+                            <td><?=$ii;?></td>
                             <td><?=$u2['yot'].$u2['fullname'];?></td>
                             <td><?=$u2['phone'];?></td>
-                            <td><?=$u2['job'];?></td>
                             <td><?=$u2['part'];?></td>
+                            <td><?=$u2['type'];?></td>
                             <td><?=$u2['time'];?> น.</td>
                         </tr>
                         <?php
+                        $ii++;
                     }
                 }
                 ?>
             </table>
         </div>
+
+        <h3>รายชื่อช่วงเช้า</h3>
+        <div>
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th scope="col">ชื่อ-สกุล</th>
+                    <th scope="col">เบอร์โทร</th>
+                    <th scope="col">หน่วยงาน</th>
+                    <th scope="col">ประเภท</th>
+                    <th scope="col">เวลาที่เข้าร่วมประชุม</th>
+                </tr>
+                <?php 
+                $i = 1;
+                if ($q->num_rows > 0) {
+                    while ($u = $q->fetch_assoc()) {
+                        ?>
+                        <tr>
+                            <td><?=$i;?></td>
+                            <td><?=$u['yot'].$u['fullname'];?></td>
+                            <td><?=$u['phone'];?></td>
+                            <td><?=$u['part'];?></td>
+                            <td><?=$u['type'];?></td>
+                            <td><?=$u['time'];?> น.</td>
+                        </tr>
+                        <?php
+                        $i++;
+                    }
+                }
+                ?>
+            </table>
+        </div>
+        
     </div>
 </body>
 </html>
